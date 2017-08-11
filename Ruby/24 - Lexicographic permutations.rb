@@ -10,7 +10,7 @@ What is the millionth lexicographic permutation of the digits 0, 1, 2, 3, 4, 5, 
 
 
 ############
-# naive approach: O(n!) (yikes!)
+# naive approach: O(n! * n * log(n)) (yikes!)
 ############
 =begin
 def nth_permutation(elements, target=nil)
@@ -23,11 +23,13 @@ def nth_permutation(elements, target=nil)
 end
 =end
 
-# efficient approach: O(n) (not counting the sort) / or [I think] O(n log n) with the sort
+# efficient approach: O(n) (not counting the sort) /
+# or O(n * log(n)) with the sort is needed
 def nth_permutation(elements_input, target_input)
 	# sort elements just to make method work for unsorted lists
 	elements = elements_input.map(&:to_s).sort
-	# using target = 0 would give us first permutation, therefore target = (1_000_000 - 1) will give us millionth permutation
+	# using target = 0 would give us first permutation, therefore
+	# target = (1_000_000 - 1) will give us millionth permutation
 	target = target_input - 1
 	# will accumulate each consecutive element as it is calculated
 	result = ""
@@ -41,15 +43,19 @@ def nth_permutation(elements_input, target_input)
 	return nil if target_input > num_of_perms_remaining
 
 	until elements.empty?
-		# find x where x is how any permutations exist with the same next element
-		# equivalent to factorial(num_of_elements_remaining - 1)
+		# find x where x is how many permutations exist with the same next element.
+		# (is equivalent to factorial(num_of_elements_remaining - 1))
 		num_of_perms_remaining /= num_of_elements_remaining
 		num_of_elements_remaining -= 1
-		# each consecutive possible next element accounts for an additional `num_of_perms_remaining` possible permutations.
-		# therefore, if the target is less than num_of_perms_remaining, we the next element we need is the first
-		# available ordered element.  if target is between num_of_perms_remaining and (num_of_perms_remaining * 2), then we
+		# each consecutive possible next element accounts for an additional
+		# `num_of_perms_remaining` possible permutations.
+		# therefore, if the target is less than num_of_perms_remaining,
+		# the next element we need is the first
+		# available ordered element.  if target is between
+		# num_of_perms_remaining and (num_of_perms_remaining * 2), then we
 		# need the second available ordered element, etc.
-		# the remainder is the number of possible permutations remaining between `result + elements.join` and the target permutation,
+		# the remainder is the number of possible permutations remaining
+		# between `result + elements.join` and the target permutation,
 		# so we make that remainder the new target
 		next_element, target = target.divmod(num_of_perms_remaining)
 
