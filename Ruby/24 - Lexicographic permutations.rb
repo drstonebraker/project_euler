@@ -24,7 +24,7 @@ end
 =end
 
 # efficient approach: O(n) (not counting the sort) /
-# or O(n * log(n)) with the sort is needed
+# or O(n * log(n)) when the sort is needed
 def nth_permutation(elements_input, target_input)
 	# sort elements just to make method work for unsorted lists
 	elements = elements_input.map(&:to_s).sort
